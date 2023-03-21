@@ -25,19 +25,19 @@ class App extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', this.props.backAndroidHandler || this.onBackPress);
 
     // If the app was "woken up" by an external route.
-    Linking.getInitialURL().then(url => this.parseDeepURL(url));
+    Linking.getInitialURL().then((url) => this.parseDeepURL(url));
     // Add an event listener for further deep linking.
-    Linking.addEventListener('url', this.handleDeepURL);
+    // Linking.addEventListener('url', this.handleDeepURL);
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.props.backAndroidHandler || this.onBackPress);
-    Linking.removeEventListener('url', this.handleDeepURL);
+    // Linking.removeEventListener('url', this.handleDeepURL);
   }
 
   onBackPress = () => this.props.navigationStore.pop();
 
-  handleDeepURL = e => this.parseDeepURL(e.url);
+  handleDeepURL = (e) => this.parseDeepURL(e.url);
 
   parseDeepURL = (url) => {
     // If there is no url, then return.
@@ -53,8 +53,8 @@ class App extends React.Component {
     }
     // Build an array of paths for every scene.
     const allPaths = Object.values(this.props.navigationStore.states)
-      .map(obj => obj.path)
-      .filter(path => path);
+      .map((obj) => obj.path)
+      .filter((path) => path);
     // Try to match the url against the set of paths and parse the url parameters.
     const parsedPath = pathParser(cleanUrl, allPaths);
 
@@ -70,7 +70,7 @@ class App extends React.Component {
     const actionKey = Object.entries(this.props.navigationStore.states)
       .filter(([, value]) => value.path === path)
       .map(([key]) => key)
-      .find(key => key);
+      .find((key) => key);
 
     if (this.props.onDeepLink) {
       this.props.onDeepLink({ url, action: actionKey, params });
@@ -81,9 +81,7 @@ class App extends React.Component {
   };
 
   render() {
-    const {
-      dispatch, state, navigator: AppNavigator, navigationStore,
-    } = this.props;
+    const { dispatch, state, navigator: AppNavigator, navigationStore } = this.props;
     if (dispatch && state) {
       navigationStore.externalDispatch = dispatch;
       navigationStore.externalState = state;
@@ -108,9 +106,7 @@ class App extends React.Component {
   }
 }
 
-const Router = ({
-  createReducer, sceneStyle, onStateChange, scenes, uriPrefix, navigator, getSceneStyle, children, onDeepLink, wrapBy, navigationStore: store, ...props
-}) => {
+const Router = ({ createReducer, sceneStyle, onStateChange, scenes, uriPrefix, navigator, getSceneStyle, children, onDeepLink, wrapBy, navigationStore: store, ...props }) => {
   const data = { ...props };
   if (getSceneStyle) {
     data.cardStyle = getSceneStyle(props);
@@ -143,7 +139,7 @@ Router.defaultProps = {
   onStateChange: null,
   scenes: null,
   navigator: null,
-  wrapBy: props => props,
+  wrapBy: (props) => props,
   getSceneStyle: null,
   sceneStyle: null,
   children: null,
